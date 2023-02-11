@@ -31,4 +31,5 @@ btn.addEventListener('click', () => {
     });
     count = count + colors.length;
     points.innerText =` ${count}`;
+
 } )
