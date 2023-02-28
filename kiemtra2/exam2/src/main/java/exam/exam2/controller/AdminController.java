@@ -1,9 +1,5 @@
 package exam.exam2.controller;
 import exam.exam2.Dto.AdminDto;
-import exam.exam2.Dto.CourseDto;
-import exam.exam2.exception.ConstraintViolationException;
-import exam.exam2.model.Course;
-import exam.exam2.model.User;
 import exam.exam2.request.UpsertCourseRequest;
 import exam.exam2.service.ADminService;
 import exam.exam2.service.UserService;
