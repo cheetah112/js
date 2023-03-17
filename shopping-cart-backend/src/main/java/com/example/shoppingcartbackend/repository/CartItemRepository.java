@@ -19,15 +19,15 @@ import java.util.Optional;
 public class CartItemRepository {
 
     ModelMapper mapper = new ModelMapper();
-//    TypeMap<CartItem,CartItemDto> propertyMapper = this.mapper.createTypeMap(CartItem.class,CartItemDto.class);
-//    propertyMapper.addMappings(
-//            mapper -> mapper.map())
+
     public List<CartItemDto> getAllItem() {
         List<CartItemDto> listCartItem = new ArrayList<>();
 
         for (CartItem item: CartDB.cart
              ) {
-            CartItemDto cartItemDto = mapper.map(item, CartItemDto.class);
+            CartItemDto cartItemDto = mapper.map(item,CartItemDto.class);
+            Course course = CourseDB.courses.stream().filter(c -> c.getId().equals(item.getCourseId())).findFirst().orElse(null);
+            cartItemDto.setCourse(course);
             listCartItem.add(cartItemDto);
         }
         return listCartItem;
@@ -62,15 +62,6 @@ public class CartItemRepository {
             }
         }
         throw new BadRequestException("Id không tồn tại");
-    }
-    public CartItem findItemById(Integer id){
-        Optional<Course> courseOptional = CourseDB.courses.stream()
-                .filter(c -> c.getId() == id)
-                .findFirst();
-        if(courseOptional.isPresent()){
-            return new CartItem((CartDB.cart.get(CartDB.cart.size()-1).getId())+1,courseOptional.get().getId(),1);
-        }
-        throw new BadRequestException("Không tìm thấy id khóa học");
     }
 
 }
