@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 function UserList() {
     const [list, setList] = useState([]);
+    const [deps,setDeps] = useState(true);
     const Delete = (id) => {
         fetch(`http://localhost:8080/api/v1/users/${id}`,{method : 'DELETE',})
         .then(res => {
@@ -11,11 +12,13 @@ function UserList() {
             }else{
                 throw new Error("Xóa thất bại");
             }
+            setDeps((deps)=> !deps);
         })
         .catch(err => {
             console.error("Xóa thất b", err)
         });
     }
+
     useEffect(() => {
     const fetchData = async () =>{
         const data = await fetch("http://localhost:8080/api/v1/users");
@@ -27,9 +30,9 @@ function UserList() {
     };
 
     fetchData();
-
+    console.log("useeffect");
     
-  },[]);
+  },[deps]);
 
 
     return (
