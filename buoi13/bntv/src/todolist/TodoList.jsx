@@ -13,7 +13,6 @@ function TodoList() {
         fetchData();
     },[bl]);
     const [inputValue, setInputValue] = useState('');
-    let input = '';
     const Add = () => {
         const todo = {title : inputValue};
         fetch("http://localhost:8080/api/todos",{
@@ -30,15 +29,23 @@ function TodoList() {
     }
     const Edit = (id) => {
         const editText = prompt("Điền nội dung công việc được thay đổi:");
+        const oldTodo = list.find(todo => todo.id === id);
         if(editText !== null && editText !== ""){
-            const todo = {title: editText, status: false};
+            const todo = {title: editText, status: oldTodo.status};
             fetch(`http://localhost:8080/api/todos/${id}`,{
-                method: 'PUT',
+            method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(todo)})
             .then(res => res.json())
             .then((data) => {
-                setBl(bl => !bl);
+                const newList = list.map(item => {
+                    if(item.id === id){
+                        return {...item, title: data.title, status: data.status};
+                    }else{
+                        return item;
+                    }
+                });
+                setList(newList);
             })
             .catch(err => console.log(err.title))
         }else{
@@ -48,9 +55,10 @@ function TodoList() {
     const Delete = (id) => {
         fetch(`http://localhost:8080/api/todos/${id}`, {
             method: 'DELETE'
-        });
-        const newList = list.filter(item => item.id != id);
-        setList(newList);
+        })
+        .then(
+            setList(list => list.filter(item => item.id != id))
+        )
     }
     return (
     <>
