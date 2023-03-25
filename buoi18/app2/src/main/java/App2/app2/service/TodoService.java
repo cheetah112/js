@@ -14,14 +14,7 @@ import java.util.*;
 public class TodoService {
     @Autowired
     private TodoRepository todoRepository;
-    private List<Todo> todos;
 
-    public TodoService() {
-        todos =  new ArrayList<>();
-        todos.add(new Todo(1, "Làm bài tập", true));
-        todos.add(new Todo(2, "Đá bóng", true));
-        todos.add(new Todo(3, "Đi chơi", false));
-    }
 
     private int generateId() {
         Random rd = new Random();
@@ -66,4 +59,5 @@ public class TodoService {
     public void deleteTodo(Integer id) {
         todoRepository.deleteById(id);
     }
+
 }
